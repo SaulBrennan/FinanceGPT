@@ -16,7 +16,7 @@ const HeaderBar = () => {
         <div className={styles.logoBar}>
           <Link href="/">
             <img alt="logo" src="/logo.png" />
-            <h1>Teev, <i>your own finance expert</i></h1>
+            <h1>Teev, <i>your own finance expert!</i></h1>
           </Link>
         </div>
       </Header>
