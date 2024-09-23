@@ -1,12 +1,11 @@
-import React, { KeyboardEventHandler, useRef } from 'react'
-
+import React, { KeyboardEventHandler, useRef, useState } from 'react'
 import { ClearOutlined, SendOutlined } from '@ant-design/icons'
-
 import { ChatRole, SendBarProps } from './interface'
 import Show from './Show'
 
 const SendBar = (props: SendBarProps) => {
   const { loading, disabled, onSend, onClear, onStop } = props
+  const [isFirstInteraction, setIsFirstInteraction] = useState(true)
 
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
@@ -26,7 +25,7 @@ const SendBar = (props: SendBarProps) => {
   }
 
   const handleSend = () => {
-    const content = inputRef.current?.value
+    const content = inputRef.current?.value.trim()
     if (content) {
       inputRef.current!.value = ''
       inputRef.current!.style.height = 'auto'
@@ -34,6 +33,7 @@ const SendBar = (props: SendBarProps) => {
         content,
         role: ChatRole.User
       })
+      setIsFirstInteraction(false)
     }
   }
 
@@ -43,6 +43,7 @@ const SendBar = (props: SendBarProps) => {
     }
 
     if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
+      e.preventDefault()
       handleSend()
     }
   }
@@ -51,7 +52,7 @@ const SendBar = (props: SendBarProps) => {
     <Show
       fallback={
         <div className="thinking">
-          <span>Thinking...</span>
+          <span>Thinking</span>
           <div className="stop" onClick={onStop}>
             Stop
           </div>
@@ -64,7 +65,7 @@ const SendBar = (props: SendBarProps) => {
           ref={inputRef!}
           className="input"
           disabled={disabled}
-          placeholder="How can Teev help you today?"
+          placeholder={isFirstInteraction ? "How can Teev help you today?" : "Reply to Teev"}
           autoComplete="off"
           rows={1}
           onKeyDown={onKeydown}
