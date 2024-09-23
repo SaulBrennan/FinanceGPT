@@ -64,7 +64,7 @@ const SendBar = (props: SendBarProps) => {
           ref={inputRef!}
           className="input"
           disabled={disabled}
-          placeholder="How can Teev help you Xtoday?"
+          placeholder="How can Teev help you today?"
           autoComplete="off"
           rows={1}
           onKeyDown={onKeydown}
