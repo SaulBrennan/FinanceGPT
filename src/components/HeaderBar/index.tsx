@@ -15,8 +15,7 @@ const HeaderBar = () => {
       <Header className={styles.header}>
         <div className={styles.logoBar}>
           <Link href="/">
-            <img alt="logo" src="/logo.png" />
-            <h1>Teev, <i>your own finance expert!</i></h1>
+            <img alt="logo" src="/logo100.png" />
           </Link>
         </div>
       </Header>

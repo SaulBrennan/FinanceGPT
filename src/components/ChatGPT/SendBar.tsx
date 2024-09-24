@@ -1,13 +1,17 @@
-import React, { KeyboardEventHandler, useRef, useState } from 'react'
+import React, { KeyboardEventHandler, useRef, useEffect } from 'react'
 import { ClearOutlined, SendOutlined } from '@ant-design/icons'
 import { ChatRole, SendBarProps } from './interface'
 import Show from './Show'
 
 const SendBar = (props: SendBarProps) => {
-  const { loading, disabled, onSend, onClear, onStop } = props
-  const [isFirstInteraction, setIsFirstInteraction] = useState(true)
-
+  const { loading, disabled, onSend, onClear, onStop, isFirstInteraction, setIsFirstInteraction } = props
   const inputRef = useRef<HTMLTextAreaElement>(null)
+
+  console.log('SendBar render - isFirstInteraction:', isFirstInteraction)
+
+  useEffect(() => {
+    console.log('SendBar effect - isFirstInteraction changed:', isFirstInteraction)
+  }, [isFirstInteraction])
 
   const onInputAutoSize = () => {
     if (inputRef.current) {
@@ -17,14 +21,18 @@ const SendBar = (props: SendBarProps) => {
   }
 
   const handleClear = () => {
+    console.log('SendBar handleClear - Before:', isFirstInteraction)
     if (inputRef.current) {
       inputRef.current.value = ''
       inputRef.current.style.height = 'auto'
+      setIsFirstInteraction(true) // Reset the interaction state
       onClear()
     }
+    console.log('SendBar handleClear - After:', true)
   }
 
   const handleSend = () => {
+    console.log('SendBar handleSend - Before:', isFirstInteraction)
     const content = inputRef.current?.value.trim()
     if (content) {
       inputRef.current!.value = ''
@@ -35,16 +43,18 @@ const SendBar = (props: SendBarProps) => {
       })
       setIsFirstInteraction(false)
     }
+    console.log('SendBar handleSend - After:', false)
   }
 
   const onKeydown: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
     if (e.shiftKey) {
       return
     }
-
     if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
+      console.log('SendBar onKeydown Enter - Before handleSend')
       e.preventDefault()
       handleSend()
+      console.log('SendBar onKeydown Enter - After handleSend')
     }
   }
 
@@ -65,16 +75,32 @@ const SendBar = (props: SendBarProps) => {
           ref={inputRef!}
           className="input"
           disabled={disabled}
-          placeholder={isFirstInteraction ? "How can Teev help you today?" : "Reply to Teev"}
+          placeholder={isFirstInteraction ? "How can Teev help your finances today?" : "Reply to Teev..."}
           autoComplete="off"
           rows={1}
           onKeyDown={onKeydown}
           onInput={onInputAutoSize}
         />
-        <button className="button" title="Send" disabled={disabled} onClick={handleSend}>
+        <button 
+          className="button" 
+          title="Send" 
+          disabled={disabled} 
+          onClick={() => {
+            console.log('SendBar Send button clicked')
+            handleSend()
+          }}
+        >
           <SendOutlined />
         </button>
-        <button className="button" title="Clear" disabled={disabled} onClick={handleClear}>
+        <button 
+          className="button" 
+          title="Clear" 
+          disabled={disabled} 
+          onClick={() => {
+            console.log('SendBar Clear button clicked')
+            handleClear()
+          }}
+        >
           <ClearOutlined />
         </button>
       </div>
