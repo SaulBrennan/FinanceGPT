@@ -55,6 +55,9 @@ const perplexitySystemMessage = {
 };
 
 const handler = async (req: Request): Promise<Response> => {
+  const encoder = new TextEncoder()
+  const decoder = new TextDecoder()
+
   try {
     const { messages } = (await req.json()) as {
       messages: Message[]
@@ -153,8 +156,8 @@ const handler = async (req: Request): Promise<Response> => {
       const classification = classificationData.choices[0].message.content.trim()
 
       if (classification === '1') {
-        // Third call: Get finance advice using GPT-4 Turbo
-        const financeResponse = await fetch(apiUrl, {
+        // Third call: Get finance advice using GPT-4 Turbo with streaming
+        const streamingResponse = await fetch(apiUrl, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${apiKey}`,
@@ -169,19 +172,44 @@ const handler = async (req: Request): Promise<Response> => {
             ],
             temperature: 0.7,
             max_tokens: 500,
+            stream: true,
           })
         })
       
-        if (financeResponse.status !== 200) {
-          throw new Error(`Finance GPT API error: ${financeResponse.statusText}`)
+        if (streamingResponse.status !== 200) {
+          throw new Error(`Finance GPT API error: ${streamingResponse.statusText}`)
         }
       
-        const financeData = await financeResponse.json();
-        const financeAdvice = financeData.choices[0].message.content.trim();
-        return new Response(financeAdvice);
-
+        return new Response(
+          new ReadableStream({
+            async start(controller) {
+              const parser = createParser(onParse)
+              function onParse(event: ParsedEvent | ReconnectInterval) {
+                if (event.type === 'event') {
+                  const data = event.data
+                  if (data === '[DONE]') {
+                    controller.close()
+                    return
+                  }
+                  try {
+                    const json = JSON.parse(data)
+                    const text = json.choices[0].delta.content
+                    if (text) {
+                      controller.enqueue(encoder.encode(text))
+                    }
+                  } catch (e) {
+                    controller.error(e)
+                  }
+                }
+              }
+              for await (const chunk of streamingResponse.body as any) {
+                parser.feed(decoder.decode(chunk))
+              }
+            }
+          })
+        )
       } else {
-        // Use Perplexity API for classifications '2' and '3'
+        // Use Perplexity API for classifications '2' and '3' with streaming
         const PERP_API_KEY = process.env.PERP_API_KEY;
         const PERP_BASE_URL = "https://api.perplexity.ai/chat/completions";
         
@@ -201,7 +229,8 @@ const handler = async (req: Request): Promise<Response> => {
             messages: perplexityMessages,
             max_tokens: 4000,
             temperature: 0.2,
-            top_p: 0.9
+            top_p: 0.9,
+            stream: true
           })
         };
         
@@ -211,10 +240,34 @@ const handler = async (req: Request): Promise<Response> => {
           throw new Error(`Perplexity API error: ${perplexityResponse.statusText}`);
         }
         
-        const perplexityData = await perplexityResponse.json();
-        const perplexityAdvice = perplexityData.choices[0].message.content.trim();
-        
-        return new Response(perplexityAdvice);
+        return new Response(
+          new ReadableStream({
+            async start(controller) {
+              const parser = createParser(onParse)
+              function onParse(event: ParsedEvent | ReconnectInterval) {
+                if (event.type === 'event') {
+                  const data = event.data
+                  if (data === '[DONE]') {
+                    controller.close()
+                    return
+                  }
+                  try {
+                    const json = JSON.parse(data)
+                    const text = json.choices[0].delta.content
+                    if (text) {
+                      controller.enqueue(encoder.encode(text))
+                    }
+                  } catch (e) {
+                    controller.error(e)
+                  }
+                }
+              }
+              for await (const chunk of perplexityResponse.body as any) {
+                parser.feed(decoder.decode(chunk))
+              }
+            }
+          })
+        )
       }
     } else {
       // Return the initial response (question asking for more information)
