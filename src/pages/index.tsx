@@ -11,7 +11,7 @@ export default function Home() {
     <>
       <Head>
         <title>Teev</title>
-        <meta name="description" content="A chat application powered by ChatGPT" />
+        <meta name="description" content="Your personal finance assistant: budgeting, investing, and money management advice in your pocket" />
       </Head>
       <Layout hasSider className={styles.layout}>
         <Layout>
