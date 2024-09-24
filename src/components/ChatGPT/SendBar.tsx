@@ -70,7 +70,7 @@ const SendBar = (props: SendBarProps) => {
       }
       loading={loading}
     >
-      <div className="send-bar">
+      <div className="send-bar" style={{ marginTop: isFirstInteraction ? '70px' : '0' }}>
         <textarea
           ref={inputRef!}
           className="input"
@@ -81,10 +81,10 @@ const SendBar = (props: SendBarProps) => {
           onKeyDown={onKeydown}
           onInput={onInputAutoSize}
         />
-        <button 
-          className="button" 
-          title="Send" 
-          disabled={disabled} 
+        <button
+          className="button"
+          title="Send"
+          disabled={disabled}
           onClick={() => {
             console.log('SendBar Send button clicked')
             handleSend()
@@ -92,10 +92,10 @@ const SendBar = (props: SendBarProps) => {
         >
           <SendOutlined />
         </button>
-        <button 
-          className="button" 
-          title="Clear" 
-          disabled={disabled} 
+        <button
+          className="button"
+          title="Clear"
+          disabled={disabled}
           onClick={() => {
             console.log('SendBar Clear button clicked')
             handleClear()

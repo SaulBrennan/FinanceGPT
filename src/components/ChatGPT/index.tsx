@@ -34,31 +34,31 @@ const ChatGPT = (props: ChatGPTProps) => {
   };
 
   const allBoxMessages = [
-    '💳 What are the best current credit card reward offers?',
-    '🏠 Should I overpay my mortgage or invest the extra money?',
-    '📈 What is the top performing fund this year and why?',
-    '💷 Workplace pension vs SIPP: Which is better for UK retirement?',
+    '💳 Which credit cards offer the best cashback and rewards?',
+    '🏠 Should I overpay my mortgage or invest in an ISA?',
+    '📈 What is the top performing FTSE fund this year and why?',
+    '💷 Workplace pension vs SIPP: Which is better for retirement?',
     '💰 How can I start building an emergency fund?',
-    '📊 What is the difference between stocks and bonds?',
-    '🏦 How do I choose the right bank account for my needs?',
-    '🎓 What are the best strategies for paying off student loans?',
-    '📱 Is it better to buy or lease a new smartphone?',
+    '📊 What is the difference between shares and gilts?',
+    '🏦 How do I choose the right current account for my needs?',
+    '🎓 What are the best strategies for repaying student loans?',
+    '📱 Is it better to buy or get a contract for a new mobile?',
     '🚗 How do I negotiate the best price when buying a car?',
-    '🏥 What should I know about health savings accounts (HSAs)?',
-    '🏘️ Is now a good time to invest in real estate?',
-    '💼 How can I ask for a raise at work effectively?',
-    '🔑 What are the pros and cons of buying vs renting a home?',
+    '🏥 What should I know about private medical insurance?',
+    '🏘️ Is now a good time to invest in property?',
+    '💼 How can I effectively ask for a pay rise at work?',
+    '🔑 What are the pros and cons of buying vs renting a flat?',
     '💹 How do I start investing in the stock market?',
     '🛍️ What are some effective strategies for reducing spending?',
-    '🧾 How can I minimize my tax liability legally?',
+    '🧾 How can I minimise my tax liability legally?',
     '🏭 What are ESG investments and should I consider them?',
     '🔒 How much should I save for retirement?',
     '💸 What is the best way to consolidate and pay off debt?',
     '📅 How do I create and stick to a monthly budget?',
     '🌍 What are the financial implications of moving abroad?',
-    '👵 How do I financially prepare for long-term care needs?',
-    '🎨 Is art a good investment? How do I start?'
-  ];
+    '👵 How do I financially prepare for care home costs?',
+    '🎨 Is investing in premium bonds worth it? How do I start?'
+    ];
 
   useEffect(() => {
     setBoxMessages(allBoxMessages.sort(() => 0.5 - Math.random()).slice(0, 4));
@@ -117,7 +117,7 @@ const ChatGPT = (props: ChatGPTProps) => {
           display: 'grid',
           gridTemplateColumns: 'repeat(2, 1fr)',
           gap: '1rem',
-          marginTop: '50px',
+          marginTop: '80px',
           height: '200px'
         }}>
           {boxMessages.map((message, index) => (
