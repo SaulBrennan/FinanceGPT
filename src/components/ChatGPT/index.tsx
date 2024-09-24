@@ -50,15 +50,23 @@ const ChatGPT = (props: ChatGPTProps) => {
     '🔑 What are the pros and cons of buying vs renting a flat?',
     '💹 How do I start investing in the stock market?',
     '🛍️ What are some effective strategies for reducing spending?',
-    '🧾 How can I minimise my tax liability legally?',
-    '🏭 What are ESG investments and should I consider them?',
     '🔒 How much should I save for retirement?',
     '💸 What is the best way to consolidate and pay off debt?',
     '📅 How do I create and stick to a monthly budget?',
     '🌍 What are the financial implications of moving abroad?',
     '👵 How do I financially prepare for care home costs?',
-    '🎨 Is investing in premium bonds worth it? How do I start?'
-    ];
+    '🎨 Is investing in premium bonds worth it? How do I start?',
+    '📊 What is the top performing stock this year and why?',
+    '📊 What is the top performing fund this year and why?',
+    '🏦 Which bank currently offers the highest interest rates?',
+    '💷 Which credit card has the best cashback offer right now?',
+    '📅 What’s the latest update on UK interest rates?',
+    '🏘️ What is the current average house price in London?',
+    '🚗 What are the cheapest car insurance deals available today?',
+    '🛍️ Which UK supermarkets have the biggest discounts this week?',
+    '💡 What is the current price of electricity and gas in the UK?'
+  ];
+
 
   useEffect(() => {
     setBoxMessages(allBoxMessages.sort(() => 0.5 - Math.random()).slice(0, 4));
@@ -117,7 +125,7 @@ const ChatGPT = (props: ChatGPTProps) => {
           display: 'grid',
           gridTemplateColumns: 'repeat(2, 1fr)',
           gap: '1rem',
-          marginTop: '80px',
+          marginTop: '70px',
           height: '200px'
         }}>
           {boxMessages.map((message, index) => (

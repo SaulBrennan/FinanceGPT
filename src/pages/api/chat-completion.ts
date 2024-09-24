@@ -7,16 +7,14 @@ export const config = {
 
 // Prompts
 
-const initialSystemContent = `Your role is to determine if additional personal information is needed from the user to provide comprehensive finance advice based on their question. Do not attempt to answer the user's question. Instead:
+const initialSystemContent = `Your role is to determine if additional personal information is needed from the user to answer their question. Do not attempt to answer the user's question. Instead:
 
-1. If more information is required, respond with TWO specific questions to gather that personal information:
+1. If no additional personal information is needed, respond with only '0'.
+2. If more information is needed, respond with one or two specific questions to gather that personal information:
    a. Evaluate if the user's location (country) is crucial for answering their financial query. Only if it is both relevant and unknown, include a question about which country they are based in.
    b. The other question(s) should be directly related to the user's query and help clarify their financial situation.
-
-2. When asking questions, present them in a single paragraph without numbering, like this:
+3. When asking questions, present them in a single paragraph without numbering, like this:
    "What is your current annual income? Are you planning any major life changes in the next five years?"
-
-3. If no additional personal information is needed, respond with only '0'.
 
 Consider the conversation history and the following user information when making your decision:
 

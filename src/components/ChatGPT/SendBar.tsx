@@ -70,7 +70,7 @@ const SendBar = (props: SendBarProps) => {
       }
       loading={loading}
     >
-      <div className="send-bar" style={{ marginTop: isFirstInteraction ? '70px' : '0' }}>
+      <div className="send-bar" style={{ marginTop: isFirstInteraction ? '60px' : '0' }}>
         <textarea
           ref={inputRef!}
           className="input"
