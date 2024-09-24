@@ -75,7 +75,7 @@ const SendBar = (props: SendBarProps) => {
           ref={inputRef!}
           className="input"
           disabled={disabled}
-          placeholder={isFirstInteraction ? "How can Teev help your finances today?" : "Reply to Teev..."}
+          placeholder={isFirstInteraction ? "How can Teev help you today?" : "Reply to Teev..."}
           autoComplete="off"
           rows={1}
           onKeyDown={onKeydown}
